@@ -8,7 +8,7 @@ public class SortingVisualization extends JPanel {
     private static final int SPACING = 2;
     private static final int WIDTH = (RECT_WIDTH + SPACING) * ARRAY_SIZE;
     private static final int HEIGHT = 400;
-    private static final int DELAY = 20; // Milliseconds
+    private static final int DELAY = 50; // Milliseconds
 
     private final double[] array = new double[ARRAY_SIZE];
     private final Map<Double, Rectangle> rectLabelMap = new HashMap<>();
@@ -49,8 +49,15 @@ public class SortingVisualization extends JPanel {
                         swap(j, j + 1);
                         repaint();
                         pause();
+                        rectLabelMap.get(array[j]).color = Color.BLUE;
+                        rectLabelMap.get(array[j + 1]).color = Color.BLUE;
                     }
                 }
+            }
+            for (int i = 0; i < ARRAY_SIZE; i++) {
+                rectLabelMap.get(array[i]).color = Color.GREEN;
+                repaint();
+                pause();
             }
         }).start();
     }
@@ -59,8 +66,8 @@ public class SortingVisualization extends JPanel {
         double temp = array[i];
         array[i] = array[j];
         array[j] = temp;
-
-
+        rectLabelMap.get(array[i]).color = Color.RED;
+//        rectLabelMap.get(array[j]).color = Color.RED;
         int tempX = rectLabelMap.get(array[i]).x;
         rectLabelMap.get(array[i]).x = rectLabelMap.get(array[j]).x;
         rectLabelMap.get(array[j]).x = tempX;
@@ -80,7 +87,7 @@ public class SortingVisualization extends JPanel {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         for (Rectangle rectangle : rectLabelMap.values()) {
-            g2d.setColor(Color.BLUE);
+            g2d.setColor(rectangle.color != null ? rectangle.color : Color.BLUE);
             g2d.fill(rectangle);
         }
     }
@@ -94,6 +101,14 @@ public class SortingVisualization extends JPanel {
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
         });
+    }
+
+    private static class Rectangle extends java.awt.Rectangle {
+        private Color color;
+
+        Rectangle(int x, int y, int width, int height) {
+            super(x, y, width, height);
+        }
     }
 
 }

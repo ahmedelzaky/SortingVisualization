@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -52,7 +53,7 @@ public class SortingVisualization extends JPanel {
         }
     }
 
-    public void startSort(String algorithm) {
+    public void start(String algorithm) {
         switch (algorithm) {
             case "Bubble Sort":
                 bubbleSort();
@@ -69,10 +70,68 @@ public class SortingVisualization extends JPanel {
             case "Quick Sort":
                 quickSort();
                 break;
+            case "Linear Search":
+                linearSearch();
+                break;
+            case "Binary Search":
+                binarySearch();
+                break;
             default:
                 throw new IllegalArgumentException("Invalid sorting algorithm");
         }
     }
+
+    private void binarySearch() {
+        new Thread(() -> {
+            Arrays.sort(array);
+            initializeRectangles();
+            repaint();
+            pause(100);
+            Random rand = new Random();
+            int index = rand.nextInt(ARRAY_SIZE) - 1;
+            double key = array[index];
+            int low = 0;
+            int high = ARRAY_SIZE - 1;
+            while (low <= high) {
+                int mid = low + (high - low) / 2;
+                rectLabelMap.get(array[mid]).color = Color.RED;
+                repaint();
+                pause(100);
+                if (array[mid] == key) {
+                    rectLabelMap.get(array[mid]).color = Color.GREEN;
+                    repaint();
+                    break;
+                } else if (array[mid] < key) {
+                    low = mid + 1;
+                } else {
+                    high = mid - 1;
+                }
+            }
+        }).start();
+    }
+
+    private void linearSearch() {
+        pause();
+        new Thread(() -> {
+            Random rand = new Random();
+            int index = rand.nextInt(ARRAY_SIZE) - 1;
+            double key = array[index];
+            for (int i = 0; i < ARRAY_SIZE; i++) {
+                rectLabelMap.get(array[i]).color = Color.RED;
+                repaint();
+                pause(100);
+                if (array[i] == key) {
+                    rectLabelMap.get(array[i]).color = Color.GREEN;
+                    repaint();
+                    break;
+                }
+                rectLabelMap.get(array[i]).color = Color.BLUE;
+                repaint();
+                pause();
+            }
+        }).start();
+    }
+
 
     public void bubbleSort() {
         new Thread(() -> {
@@ -270,6 +329,14 @@ public class SortingVisualization extends JPanel {
 
 
     private void pause() {
+        try {
+            Thread.sleep(delay);
+        } catch (InterruptedException e) {
+            e.fillInStackTrace();
+        }
+    }
+
+    private void pause(int delay) {
         try {
             Thread.sleep(delay);
         } catch (InterruptedException e) {

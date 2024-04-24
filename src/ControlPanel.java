@@ -2,20 +2,22 @@ import javax.swing.*;
 import java.awt.*;
 
 
-public class ControlFrame extends JPanel {
+public class ControlPanel extends JPanel {
 
     private static final Color BUTTON_COLOR = new Color(59, 89, 182);
     private static final Color BUTTON_HOVER_COLOR = new Color(89, 119, 212);
     private static final Color BUTTON_TEXT_COLOR = Color.WHITE;
     private static final Font BUTTON_FONT = new Font("Arial", Font.BOLD, 14);
+    private final JSlider delaySlider;
 
-    public ControlFrame() {
+    public ControlPanel() {
         setLayout(new BorderLayout(10, 10));
         setBackground(Color.BLACK);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.setBackground(Color.BLACK);
-        String[] algorithms = {"Bubble Sort", "Selection Sort", "Insertion Sort", "Merge Sort", "Quick Sort"};
+        String[] algorithms = {"Bubble Sort", "Selection Sort", "Insertion Sort",
+                "Merge Sort", "Quick Sort", "Linear Search", "Binary Search"};
         for (String algorithm : algorithms) {
             JButton button = createButton(algorithm);
             buttonPanel.add(button);
@@ -23,7 +25,7 @@ public class ControlFrame extends JPanel {
 
         JPanel sliderPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         sliderPanel.setBackground(Color.BLACK);
-        JSlider delaySlider = createDelaySlider();
+        delaySlider = createDelaySlider();
         sliderPanel.add(new JLabel("Delay:"));
         sliderPanel.add(delaySlider);
 
@@ -49,8 +51,13 @@ public class ControlFrame extends JPanel {
             }
         });
         button.addActionListener(e -> {
+            if (text.equals("Linear Search") || text.equals("Binary Search")) {
+                Main.controlPanel.disableSlider();
+            } else {
+                Main.controlPanel.enableSlider();
+            }
             Main.reset();
-            Main.sortingVisualization.startSort(text);
+            Main.sortingVisualization.start(text);
         });
         return button;
     }
@@ -66,6 +73,15 @@ public class ControlFrame extends JPanel {
             int delay = slider.getValue();
             Main.sortingVisualization.setDelay(delay);
         });
+        slider.setEnabled(false);
         return slider;
+    }
+
+    public void disableSlider() {
+        delaySlider.setEnabled(false);
+    }
+
+    public void enableSlider() {
+        delaySlider.setEnabled(true);
     }
 }

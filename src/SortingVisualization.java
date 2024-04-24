@@ -3,12 +3,12 @@ import java.awt.*;
 import java.util.*;
 
 public class SortingVisualization extends JPanel {
-    private static final int ARRAY_SIZE = 300;
-    private static final int RECT_WIDTH = 2;
+    private static final int ARRAY_SIZE = 290;
+    private static final int RECT_WIDTH = 3;
     private static final int SPACING = 1;
     private static final int WIDTH = (RECT_WIDTH + SPACING);
     private static final int HEIGHT = 500;
-    private static final int DELAY = 1; // Milliseconds
+    private static final int DELAY = 5; // Milliseconds
 
     private final double[] array = new double[ARRAY_SIZE];
     private final Map<Double, Rectangle> rectLabelMap = new HashMap<>();
@@ -88,14 +88,20 @@ public class SortingVisualization extends JPanel {
         new Thread(() -> {
             for (int i = 0; i < ARRAY_SIZE - 1; i++) {
                 int minIndex = i;
+                rectLabelMap.get(array[i]).color = Color.RED;
+                repaint();
                 for (int j = i + 1; j < ARRAY_SIZE; j++) {
+                    rectLabelMap.get(array[j]).color = Color.RED;
+                    repaint();
                     if (array[j] < array[minIndex]) {
                         minIndex = j;
                     }
+                    pause();
+                    rectLabelMap.get(array[j]).color = Color.BLUE;
+                    repaint();
                 }
                 swap(i, minIndex);
                 repaint();
-                pause();
                 rectLabelMap.get(array[i]).color = Color.BLUE;
                 rectLabelMap.get(array[minIndex]).color = Color.BLUE;
             }

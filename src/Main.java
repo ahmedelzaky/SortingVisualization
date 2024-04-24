@@ -10,7 +10,7 @@ public class Main {
         frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
         frame.add(new ControlFrame());
         frame.add(sortingVisualization);
-        frame.setSize(1000, 800);
+        frame.setSize(1200, 800);
         frame.setVisible(true);
 
     }

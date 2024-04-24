@@ -14,13 +14,21 @@ public class ControlPanel extends JPanel {
         setLayout(new BorderLayout(10, 10));
         setBackground(Color.BLACK);
 
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        buttonPanel.setBackground(Color.BLACK);
-        String[] algorithms = {"Bubble Sort", "Selection Sort", "Insertion Sort",
-                "Merge Sort", "Quick Sort", "Linear Search", "Binary Search"};
-        for (String algorithm : algorithms) {
+        JPanel sortingButtons = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        sortingButtons.setBackground(Color.BLACK);
+        String[] sortingAlgorithms = {"Bubble Sort", "Selection Sort", "Insertion Sort",
+                "Merge Sort", "Quick Sort"};
+        for (String algorithm : sortingAlgorithms) {
             JButton button = createButton(algorithm);
-            buttonPanel.add(button);
+            sortingButtons.add(button);
+        }
+
+        JPanel SearchingButtons = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        SearchingButtons.setBackground(Color.BLACK);
+        String[] searchAlgorithms = {"Linear Search", "Binary Search"};
+        for (String algorithm : searchAlgorithms) {
+            JButton button = createButton(algorithm);
+            SearchingButtons.add(button);
         }
 
         JPanel sliderPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -29,8 +37,9 @@ public class ControlPanel extends JPanel {
         sliderPanel.add(new JLabel("Delay:"));
         sliderPanel.add(delaySlider);
 
-        add(buttonPanel, BorderLayout.NORTH);
-        add(sliderPanel, BorderLayout.CENTER);
+        add(sortingButtons, BorderLayout.NORTH);
+        add(SearchingButtons, BorderLayout.CENTER);
+        add(sliderPanel, BorderLayout.SOUTH);
     }
 
     private JButton createButton(String text) {

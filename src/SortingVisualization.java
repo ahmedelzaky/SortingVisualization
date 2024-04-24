@@ -6,14 +6,14 @@ import java.util.Map;
 import java.util.Random;
 
 public class SortingVisualization extends JPanel {
-    private static final int ARRAY_SIZE = 200;
-    private static final int RECT_WIDTH = 5;
+    private static final int ARRAY_SIZE = 100;
+    private static final int RECT_WIDTH = 10;
     private static final int SPACING = 1;
     private static final int WIDTH = ARRAY_SIZE * (RECT_WIDTH + SPACING);
     private static final int HEIGHT = 500;
-    private static int delay = 1; // Milliseconds
-    private static final Color DEFUALT_COLOR = Color.BLUE;
-    private static final Color SELECTED_COLOR = Color.RED;
+    private static int delay = 5; // Milliseconds
+    private static final Color DEFUALT_COLOR = new Color(95, 137, 217);
+    private static final Color SELECTED_COLOR = new Color(255, 0, 0);
 
 
     private final double[] array = new double[ARRAY_SIZE];
@@ -88,7 +88,7 @@ public class SortingVisualization extends JPanel {
             repaint();
             pause(100);
             Random rand = new Random();
-            int index = rand.nextInt(ARRAY_SIZE) - 1;
+            int index = rand.nextInt(ARRAY_SIZE - 1);
             double key = array[index];
             int low = 0;
             int high = ARRAY_SIZE - 1;
@@ -117,7 +117,7 @@ public class SortingVisualization extends JPanel {
             int index = rand.nextInt(ARRAY_SIZE) - 1;
             double key = array[index];
             for (int i = 0; i < ARRAY_SIZE; i++) {
-                rectLabelMap.get(array[i]).color = Color.RED;
+                rectLabelMap.get(array[i]).color = SELECTED_COLOR;
                 repaint();
                 pause(100);
                 if (array[i] == key) {
@@ -125,7 +125,7 @@ public class SortingVisualization extends JPanel {
                     repaint();
                     break;
                 }
-                rectLabelMap.get(array[i]).color = Color.BLUE;
+                rectLabelMap.get(array[i]).color = DEFUALT_COLOR;
                 repaint();
                 pause();
             }

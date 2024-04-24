@@ -3,8 +3,8 @@ import java.awt.*;
 import java.util.*;
 
 public class SortingVisualization extends JPanel {
-    private static final int ARRAY_SIZE = 290;
-    private static final int RECT_WIDTH = 3;
+    private static final int ARRAY_SIZE = 200;
+    private static final int RECT_WIDTH = 5;
     private static final int SPACING = 1;
     private static final int WIDTH = ARRAY_SIZE * (RECT_WIDTH + SPACING);
     private static final int HEIGHT = 500;
@@ -15,11 +15,9 @@ public class SortingVisualization extends JPanel {
 
     public SortingVisualization() {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        //add padding to left and right
-        setBorder(BorderFactory.createEmptyBorder(0, 100, 0, 0));
         setBackground(Color.BLACK);
         generateRandomArray();
-        initializeRectanglesAndLabels();
+        initializeRectangles();
     }
 
     private void generateRandomArray() {
@@ -29,7 +27,7 @@ public class SortingVisualization extends JPanel {
         }
     }
 
-    private void initializeRectanglesAndLabels() {
+    private void initializeRectangles() {
         for (int i = 0; i < ARRAY_SIZE; i++) {
             rectLabelMap.put(
                     array[i],

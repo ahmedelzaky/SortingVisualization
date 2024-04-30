@@ -14,6 +14,7 @@ public class SortingVisualization extends JPanel {
     private static int delay = 5; // Milliseconds
     private static final Color DEFUALT_COLOR = new Color(95, 137, 217);
     private static final Color SELECTED_COLOR = new Color(255, 0, 0);
+    private static Thread sortingThread;
 
 
     private final double[] array = new double[ARRAY_SIZE];
@@ -54,7 +55,7 @@ public class SortingVisualization extends JPanel {
     }
 
     public void start(String algorithm) {
-        new Thread(() -> {
+        sortingThread = new Thread(() -> {
             long start = System.currentTimeMillis();
             switch (algorithm) {
                 case "Bubble Sort":
@@ -82,9 +83,14 @@ public class SortingVisualization extends JPanel {
                     throw new IllegalArgumentException("Invalid sorting algorithm");
             }
             long end = System.currentTimeMillis();
+            if (Thread.currentThread().getId() != sortingThread.getId()) {
+                return;
+            }
             System.out.println("Time taken: " + (end - start) + " milliseconds");
             JOptionPane.showMessageDialog(null, "Time taken: " + (end - start) + " milliseconds");
-        }).start();
+        });
+        sortingThread.start();
+
     }
 
     private void binarySearch() {

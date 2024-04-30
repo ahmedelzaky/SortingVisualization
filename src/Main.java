@@ -23,5 +23,6 @@ public class Main {
         frame.add(sortingVisualization);
         frame.revalidate();
         frame.repaint();
+
     }
 }

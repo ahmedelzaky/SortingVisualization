@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5ca6a16e-7020-4a9b-8c03-1f7651beb7af" name="Changes" comment="">
+    <list default="true" id="5ca6a16e-7020-4a9b-8c03-1f7651beb7af" name="Changes" comment="change colors">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ControlPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ControlPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/SortingVisualization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SortingVisualization.java" afterDir="false" />
     </list>
@@ -24,6 +23,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
@@ -86,8 +88,23 @@
       <workItem from="1713977748897" duration="1505000" />
       <workItem from="1713987668020" duration="40000" />
       <workItem from="1713989030430" duration="513000" />
-      <workItem from="1713990587801" duration="5957000" />
+      <workItem from="1713990587801" duration="6488000" />
+      <workItem from="1714152640939" duration="59000" />
+      <workItem from="1714152777856" duration="24000" />
+      <workItem from="1714152975828" duration="2000" />
+      <workItem from="1714171317226" duration="365000" />
+      <workItem from="1714298798506" duration="318000" />
+      <workItem from="1714507714346" duration="417000" />
     </task>
+    <task id="LOCAL-00001" summary="change colors">
+      <option name="closed" value="true" />
+      <created>1713997621035</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1713997621035</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -103,5 +120,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="change colors" />
+    <option name="LAST_COMMIT_MESSAGE" value="change colors" />
   </component>
 </project>

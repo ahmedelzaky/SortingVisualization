@@ -54,155 +54,152 @@ public class SortingVisualization extends JPanel {
     }
 
     public void start(String algorithm) {
-        switch (algorithm) {
-            case "Bubble Sort":
-                bubbleSort();
-                break;
-            case "Selection Sort":
-                selectionSort();
-                break;
-            case "Insertion Sort":
-                insertionSort();
-                break;
-            case "Merge Sort":
-                mergeSort();
-                break;
-            case "Quick Sort":
-                quickSort();
-                break;
-            case "Linear Search":
-                linearSearch();
-                break;
-            case "Binary Search":
-                binarySearch();
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid sorting algorithm");
-        }
+        new Thread(() -> {
+            long start = System.currentTimeMillis();
+            switch (algorithm) {
+                case "Bubble Sort":
+                    bubbleSort();
+                    break;
+                case "Selection Sort":
+                    selectionSort();
+                    break;
+                case "Insertion Sort":
+                    insertionSort();
+                    break;
+                case "Merge Sort":
+                    mergeSort();
+                    break;
+                case "Quick Sort":
+                    quickSort();
+                    break;
+                case "Linear Search":
+                    linearSearch();
+                    break;
+                case "Binary Search":
+                    binarySearch();
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid sorting algorithm");
+            }
+            long end = System.currentTimeMillis();
+            System.out.println("Time taken: " + (end - start) + " milliseconds");
+            JOptionPane.showMessageDialog(null, "Time taken: " + (end - start) + " milliseconds");
+        }).start();
     }
 
     private void binarySearch() {
-        new Thread(() -> {
-            Arrays.sort(array);
-            initializeRectangles();
+        Arrays.sort(array);
+        initializeRectangles();
+        repaint();
+        pause(100);
+        Random rand = new Random();
+        int index = rand.nextInt(ARRAY_SIZE - 1);
+        double key = array[index];
+        int low = 0;
+        int high = ARRAY_SIZE - 1;
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            rectLabelMap.get(array[mid]).color = Color.RED;
             repaint();
             pause(100);
-            Random rand = new Random();
-            int index = rand.nextInt(ARRAY_SIZE - 1);
-            double key = array[index];
-            int low = 0;
-            int high = ARRAY_SIZE - 1;
-            while (low <= high) {
-                int mid = low + (high - low) / 2;
-                rectLabelMap.get(array[mid]).color = Color.RED;
+            if (array[mid] == key) {
+                rectLabelMap.get(array[mid]).color = Color.GREEN;
                 repaint();
-                pause(100);
-                if (array[mid] == key) {
-                    rectLabelMap.get(array[mid]).color = Color.GREEN;
-                    repaint();
-                    break;
-                } else if (array[mid] < key) {
-                    low = mid + 1;
-                } else {
-                    high = mid - 1;
-                }
+                break;
+            } else if (array[mid] < key) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
             }
-        }).start();
+        }
     }
 
     private void linearSearch() {
         pause();
-        new Thread(() -> {
-            Random rand = new Random();
-            int index = rand.nextInt(ARRAY_SIZE) - 1;
-            double key = array[index];
-            for (int i = 0; i < ARRAY_SIZE; i++) {
-                rectLabelMap.get(array[i]).color = SELECTED_COLOR;
+        Random rand = new Random();
+        int index = rand.nextInt(ARRAY_SIZE) - 1;
+        double key = array[index];
+        for (int i = 0; i < ARRAY_SIZE; i++) {
+            rectLabelMap.get(array[i]).color = SELECTED_COLOR;
+            repaint();
+            pause(100);
+            if (array[i] == key) {
+                rectLabelMap.get(array[i]).color = Color.GREEN;
                 repaint();
-                pause(100);
-                if (array[i] == key) {
-                    rectLabelMap.get(array[i]).color = Color.GREEN;
-                    repaint();
-                    break;
-                }
-                rectLabelMap.get(array[i]).color = DEFUALT_COLOR;
-                repaint();
-                pause();
+                break;
             }
-        }).start();
+            rectLabelMap.get(array[i]).color = DEFUALT_COLOR;
+            repaint();
+            pause();
+        }
     }
 
 
     public void bubbleSort() {
-        new Thread(() -> {
-            for (int i = 0; i < ARRAY_SIZE - 1; i++) {
-                for (int j = 0; j < ARRAY_SIZE - i - 1; j++) {
-                    if (array[j] > array[j + 1]) {
-                        swap(j, j + 1);
-                        repaint();
-                        pause();
-                        rectLabelMap.get(array[j]).color = DEFUALT_COLOR;
-                        rectLabelMap.get(array[j + 1]).color = DEFUALT_COLOR;
-                    }
+        for (int i = 0; i < ARRAY_SIZE - 1; i++) {
+            for (int j = 0; j < ARRAY_SIZE - i - 1; j++) {
+                if (array[j] > array[j + 1]) {
+                    swap(j, j + 1);
+                    repaint();
+                    pause();
+                    rectLabelMap.get(array[j]).color = DEFUALT_COLOR;
+                    rectLabelMap.get(array[j + 1]).color = DEFUALT_COLOR;
                 }
             }
-            SortedColor();
-        }).start();
+        }
+        SortedColor();
     }
 
     public void selectionSort() {
-        new Thread(() -> {
-            for (int i = 0; i < ARRAY_SIZE - 1; i++) {
-                int minIndex = i;
-                rectLabelMap.get(array[i]).color = SELECTED_COLOR;
+        for (int i = 0; i < ARRAY_SIZE - 1; i++) {
+            int minIndex = i;
+            rectLabelMap.get(array[i]).color = SELECTED_COLOR;
+            repaint();
+            for (int j = i + 1; j < ARRAY_SIZE; j++) {
+                rectLabelMap.get(array[j]).color = SELECTED_COLOR;
                 repaint();
-                for (int j = i + 1; j < ARRAY_SIZE; j++) {
-                    rectLabelMap.get(array[j]).color = SELECTED_COLOR;
-                    repaint();
-                    if (array[j] < array[minIndex]) {
-                        minIndex = j;
-                    }
-                    pause();
-                    rectLabelMap.get(array[j]).color = DEFUALT_COLOR;
-                    repaint();
+                if (array[j] < array[minIndex]) {
+                    minIndex = j;
                 }
-                swap(i, minIndex);
+                pause();
+                rectLabelMap.get(array[j]).color = DEFUALT_COLOR;
                 repaint();
-                rectLabelMap.get(array[i]).color = DEFUALT_COLOR;
-                rectLabelMap.get(array[minIndex]).color = DEFUALT_COLOR;
             }
-            SortedColor();
-        }).start();
+            swap(i, minIndex);
+            repaint();
+            rectLabelMap.get(array[i]).color = DEFUALT_COLOR;
+            rectLabelMap.get(array[minIndex]).color = DEFUALT_COLOR;
+        }
+        SortedColor();
+
     }
 
     public void insertionSort() {
-        new Thread(() -> {
-            for (int i = 1; i < ARRAY_SIZE; i++) {
-                double key = array[i];
-                int j = i - 1;
-                while (j >= 0 && array[j] > key) {
-                    array[j + 1] = array[j];
-                    rectLabelMap.get(array[j + 1]).color = SELECTED_COLOR;
-                    rectLabelMap.get(array[j + 1]).x = (j + 1) * (RECT_WIDTH + SPACING);
-                    j--;
-                    repaint();
-                    pause();
-                    rectLabelMap.get(array[j + 1]).color = DEFUALT_COLOR;
-                }
-                array[j + 1] = key;
+
+        for (int i = 1; i < ARRAY_SIZE; i++) {
+            double key = array[i];
+            int j = i - 1;
+            while (j >= 0 && array[j] > key) {
+                array[j + 1] = array[j];
+                rectLabelMap.get(array[j + 1]).color = SELECTED_COLOR;
                 rectLabelMap.get(array[j + 1]).x = (j + 1) * (RECT_WIDTH + SPACING);
+                j--;
                 repaint();
+                pause();
+                rectLabelMap.get(array[j + 1]).color = DEFUALT_COLOR;
             }
-            SortedColor();
-        }).start();
+            array[j + 1] = key;
+            rectLabelMap.get(array[j + 1]).x = (j + 1) * (RECT_WIDTH + SPACING);
+            repaint();
+        }
+        SortedColor();
+
     }
 
 
     public void mergeSort() {
-        new Thread(() -> {
-            mergeSort(0, ARRAY_SIZE - 1);
-            SortedColor();
-        }).start();
+        mergeSort(0, ARRAY_SIZE - 1);
+        SortedColor();
     }
 
     private void mergeSort(int l, int r) {
@@ -278,10 +275,8 @@ public class SortingVisualization extends JPanel {
     }
 
     public void quickSort() {
-        new Thread(() -> {
-            quickSort(0, ARRAY_SIZE - 1);
-            SortedColor();
-        }).start();
+        quickSort(0, ARRAY_SIZE - 1);
+        SortedColor();
     }
 
     private void quickSort(int low, int high) {

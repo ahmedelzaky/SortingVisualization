@@ -307,7 +307,7 @@ public class SortingVisualization extends JPanel {
         Arrays.sort(array);
         initializeRectangles(INIT_ARRAY_SIZE);
         repaint();
-        pause(100);
+        pause();
         Random rand = new Random();
         int index = rand.nextInt(INIT_ARRAY_SIZE - 1);
         double key = array[index];

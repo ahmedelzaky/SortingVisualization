@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
 
 public class ControlPanel extends JPanel {
@@ -7,8 +8,11 @@ public class ControlPanel extends JPanel {
     private static final Color BUTTON_COLOR = new Color(59, 89, 182);
     private static final Color BUTTON_HOVER_COLOR = new Color(89, 119, 212);
     private static final Color BUTTON_TEXT_COLOR = Color.WHITE;
+    private final String growthRateButtonText = "Plot Growth Rate";
     private static final Font BUTTON_FONT = new Font("Arial", Font.BOLD, 14);
     private final JSlider delaySlider;
+    private boolean isTesting = false;
+
 
     public ControlPanel() {
         setLayout(new BorderLayout(10, 10));
@@ -23,13 +27,19 @@ public class ControlPanel extends JPanel {
             sortingButtons.add(button);
         }
 
-        JPanel SearchingButtons = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        SearchingButtons.setBackground(Color.BLACK);
+        JPanel searchingButtons = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        searchingButtons.setBackground(Color.BLACK);
         String[] searchAlgorithms = {"Linear Search", "Binary Search"};
         for (String algorithm : searchAlgorithms) {
             JButton button = createButton(algorithm);
-            SearchingButtons.add(button);
+            searchingButtons.add(button);
         }
+
+        // Adding a TEST button to initiate iterations of sorting.
+        JPanel testButton = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        testButton.setBackground(Color.BLACK);
+        JButton test = createButton(growthRateButtonText);
+        searchingButtons.add(test);
 
         JPanel sliderPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         sliderPanel.setBackground(Color.BLACK);
@@ -38,19 +48,19 @@ public class ControlPanel extends JPanel {
         sliderPanel.add(delaySlider);
 
         add(sortingButtons, BorderLayout.NORTH);
-        add(SearchingButtons, BorderLayout.CENTER);
+        add(searchingButtons, BorderLayout.CENTER);
         add(sliderPanel, BorderLayout.SOUTH);
     }
 
     private JButton createButton(String text) {
         JButton button = new JButton(text);
-        button.setPreferredSize(new Dimension(150, 30));
+        button.setPreferredSize(new Dimension(170, 30));
         button.setBackground(BUTTON_COLOR);
         button.setForeground(BUTTON_TEXT_COLOR);
         button.setFont(BUTTON_FONT);
         button.setFocusPainted(false);
         button.setBorderPainted(false);
-        button.addMouseListener(new java.awt.event.MouseAdapter() {
+        button.addMouseListener(Objects.equals(text, growthRateButtonText) ? null:new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 button.setBackground(BUTTON_HOVER_COLOR);
             }
@@ -60,16 +70,32 @@ public class ControlPanel extends JPanel {
             }
         });
         button.addActionListener(e -> {
-            if (text.equals("Linear Search") || text.equals("Binary Search")) {
-                Main.controlPanel.disableSlider();
-            } else {
-                Main.controlPanel.enableSlider();
-            }
             Main.reset();
-            Main.sortingVisualization.start(text);
+            if(Objects.equals(text, growthRateButtonText)) {
+                // Initiating the test.
+                if(isTesting){
+                    isTesting = false;
+                    enableSlider();
+                    button.setBackground(BUTTON_COLOR);
+                } else {
+                    isTesting = true;
+                    disableSlider();
+                    button.setBackground(Color.GREEN);
+                }
+
+            } else {
+                if (text.equals("Linear Search") || text.equals("Binary Search")) {
+                    Main.controlPanel.disableSlider();
+                } else {
+                    Main.controlPanel.enableSlider();
+                }
+                Main.sortingVisualization.start(text, isTesting);
+            }
         });
         return button;
     }
+
+
 
     private JSlider createDelaySlider() {
         JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 100, 5);

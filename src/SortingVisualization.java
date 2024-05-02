@@ -17,10 +17,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class SortingVisualization extends JPanel {
     private static final int INIT_ARRAY_SIZE = 100;
-    private static int rectWidth = 10;
     private static final int SPACING = 1;
-    private static final int WIDTH = INIT_ARRAY_SIZE * (rectWidth + SPACING);
+    private static final int WIDTH = 1720;
     private static final int HEIGHT = 500;
+    private static int rectWidth = WIDTH / INIT_ARRAY_SIZE - SPACING;
     private static int delay = 5; // Milliseconds
 
     private static final Color DEFUALT_COLOR = new Color(95, 137, 217);
@@ -32,8 +32,8 @@ public class SortingVisualization extends JPanel {
     private final int[] smallerSampleSizes = {100, 200, 300};
 
 
-    private final int[] sampleSizes = smallerSampleSizes;
-    private static final int TEST_DELAY = 1;
+    private final int[] sampleSizes = generateSeriesOfSizes(100, true, 10, 5);
+    private static final int TEST_DELAY = 0;
 
     private final int runTestFor = sampleSizes.length;
 
@@ -54,6 +54,7 @@ public class SortingVisualization extends JPanel {
         array = new double[size];
         rectLabelMap = new ConcurrentHashMap<>();
         generateRandomArray(size);
+        setOptimalRectWidth();
         initializeRectangles(size);
     }
 
@@ -82,6 +83,34 @@ public class SortingVisualization extends JPanel {
                     )
             );
         }
+    }
+
+    int[] generateSeriesOfSizes(int initial, boolean isGeometric, int factor, int size) {
+        int[] series = new int[size];
+        if (isGeometric) {
+            for (int i = 0; i < size; i++) {
+                series[i] = initial * (i + 1) * factor;
+            }
+        } else {
+            for (int i = 0; i < size; i++) {
+                series[i] = initial + i * factor;
+            }
+        }
+        printArray(series);
+        return series;
+
+
+    }
+
+    void printArray(int[] arr) {
+        for (int j : arr) {
+            System.out.print(j + " ");
+        }
+        System.out.println();
+    }
+
+    private void setOptimalRectWidth() {
+        rectWidth = Math.max((WIDTH / array.length - SPACING), 1);
     }
 
     public void start(String algorithm, boolean test) {
@@ -116,10 +145,10 @@ public class SortingVisualization extends JPanel {
                 quickSort(size);
                 break;
             case "Linear Search":
-                linearSearch();
+                linearSearch(size);
                 break;
             case "Binary Search":
-                binarySearch();
+                binarySearch(size);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid sorting algorithm");
@@ -129,7 +158,7 @@ public class SortingVisualization extends JPanel {
 
     private void runFor(int times, String algorithm) {
         if (times == 1) {
-            rectWidth = 10;
+            setOptimalRectWidth();
             sortingThread = new Thread(() -> threadOperation(algorithm));
             sortingThread.start();
         } else {
@@ -303,16 +332,16 @@ public class SortingVisualization extends JPanel {
 
     // Graph plotting method
 
-    private void binarySearch() {
+    private void binarySearch(int size) {
         Arrays.sort(array);
-        initializeRectangles(INIT_ARRAY_SIZE);
+        initializeRectangles(size);
         repaint();
         pause();
         Random rand = new Random();
-        int index = rand.nextInt(INIT_ARRAY_SIZE - 1);
+        int index = rand.nextInt(size - 1);
         double key = array[index];
         int low = 0;
-        int high = INIT_ARRAY_SIZE - 1;
+        int high = size - 1;
         while (low <= high) {
             int mid = low + (high - low) / 2;
             rectLabelMap.get(array[mid]).color = Color.RED;
@@ -330,12 +359,12 @@ public class SortingVisualization extends JPanel {
         }
     }
 
-    private void linearSearch() {
+    private void linearSearch(int size) {
         pause();
         Random rand = new Random();
-        int index = rand.nextInt(INIT_ARRAY_SIZE) - 1;
+        int index = rand.nextInt(size) - 1;
         double key = array[index];
-        for (int i = 0; i < INIT_ARRAY_SIZE; i++) {
+        for (int i = 0; i < size; i++) {
             rectLabelMap.get(array[i]).color = SELECTED_COLOR;
             repaint();
             pause();
@@ -455,16 +484,13 @@ public class SortingVisualization extends JPanel {
             if (L[i] <= R[j]) {
                 array[k] = L[i];
                 i++;
-                rectLabelMap.get(array[k]).color = SELECTED_COLOR;
-                rectLabelMap.get(array[k]).x = k * (rectWidth + SPACING);
-                repaint();
             } else {
                 array[k] = R[j];
                 j++;
-                rectLabelMap.get(array[k]).color = SELECTED_COLOR;
-                rectLabelMap.get(array[k]).x = k * (rectWidth + SPACING);
-                repaint();
             }
+            rectLabelMap.get(array[k]).color = SELECTED_COLOR;
+            rectLabelMap.get(array[k]).x = k * (rectWidth + SPACING);
+            repaint();
             rectLabelMap.get(array[k]).color = SELECTED_COLOR;
             rectLabelMap.get(array[k]).x = k * (rectWidth + SPACING);
             k++;
@@ -548,7 +574,6 @@ public class SortingVisualization extends JPanel {
     }
 
 
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -573,3 +598,6 @@ public class SortingVisualization extends JPanel {
     }
 
 }
+
+
+

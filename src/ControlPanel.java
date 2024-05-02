@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.Objects;
 
 
@@ -47,10 +49,38 @@ public class ControlPanel extends JPanel {
         sliderPanel.add(new JLabel("Delay:"));
         sliderPanel.add(delaySlider);
 
+        // Adding a dropdown menu for selecting the size of the array.
+
         add(sortingButtons, BorderLayout.NORTH);
         add(searchingButtons, BorderLayout.CENTER);
         add(sliderPanel, BorderLayout.SOUTH);
     }
+
+
+    public Choice createDropDown() {
+
+
+        Choice dropdown = new Choice();
+        int[] intArray = {1, 2, 3, 4, 5}; // Your array of integers
+        for (int value : intArray) {
+            dropdown.add(String.valueOf(value));
+        }
+
+
+        dropdown.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                System.out.println("Selected: " + dropdown.getSelectedItem());
+            }
+        });
+
+        add(dropdown);
+
+        setSize(250, 100);
+        setVisible(true);
+
+        return dropdown;
+    }
+
 
     private JButton createButton(String text) {
         JButton button = new JButton(text);
@@ -60,7 +90,7 @@ public class ControlPanel extends JPanel {
         button.setFont(BUTTON_FONT);
         button.setFocusPainted(false);
         button.setBorderPainted(false);
-        button.addMouseListener(Objects.equals(text, growthRateButtonText) ? null:new java.awt.event.MouseAdapter() {
+        button.addMouseListener(Objects.equals(text, growthRateButtonText) ? null : new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 button.setBackground(BUTTON_HOVER_COLOR);
             }
@@ -71,9 +101,9 @@ public class ControlPanel extends JPanel {
         });
         button.addActionListener(e -> {
             Main.reset();
-            if(Objects.equals(text, growthRateButtonText)) {
+            if (Objects.equals(text, growthRateButtonText)) {
                 // Initiating the test.
-                if(isTesting){
+                if (isTesting) {
                     isTesting = false;
                     enableSlider();
                     button.setBackground(BUTTON_COLOR);
@@ -84,7 +114,7 @@ public class ControlPanel extends JPanel {
                 }
 
             } else {
-                if (text.equals("Linear Search") || text.equals("Binary Search")) {
+                if (text.equals("Linear Search") || text.equals("Binary Search") || isTesting) {
                     Main.controlPanel.disableSlider();
                 } else {
                     Main.controlPanel.enableSlider();
@@ -94,7 +124,6 @@ public class ControlPanel extends JPanel {
         });
         return button;
     }
-
 
 
     private JSlider createDelaySlider() {

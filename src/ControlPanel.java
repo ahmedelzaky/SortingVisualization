@@ -8,7 +8,7 @@ public class ControlPanel extends JPanel {
     private static final Color BUTTON_COLOR = new Color(59, 89, 182);
     private static final Color BUTTON_HOVER_COLOR = new Color(89, 119, 212);
     private static final Color BUTTON_TEXT_COLOR = Color.WHITE;
-    private final String testText = "TEST";
+    private final String growthRateButtonText = "Plot Growth Rate";
     private static final Font BUTTON_FONT = new Font("Arial", Font.BOLD, 14);
     private final JSlider delaySlider;
     private boolean isTesting = false;
@@ -38,7 +38,7 @@ public class ControlPanel extends JPanel {
         // Adding a TEST button to initiate iterations of sorting.
         JPanel testButton = new JPanel(new FlowLayout(FlowLayout.CENTER));
         testButton.setBackground(Color.BLACK);
-        JButton test = createButton("TEST");
+        JButton test = createButton(growthRateButtonText);
         searchingButtons.add(test);
 
         JPanel sliderPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -54,13 +54,13 @@ public class ControlPanel extends JPanel {
 
     private JButton createButton(String text) {
         JButton button = new JButton(text);
-        button.setPreferredSize(new Dimension(150, 30));
+        button.setPreferredSize(new Dimension(170, 30));
         button.setBackground(BUTTON_COLOR);
         button.setForeground(BUTTON_TEXT_COLOR);
         button.setFont(BUTTON_FONT);
         button.setFocusPainted(false);
         button.setBorderPainted(false);
-        button.addMouseListener(Objects.equals(text, testText) ? null:new java.awt.event.MouseAdapter() {
+        button.addMouseListener(Objects.equals(text, growthRateButtonText) ? null:new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 button.setBackground(BUTTON_HOVER_COLOR);
             }
@@ -71,7 +71,7 @@ public class ControlPanel extends JPanel {
         });
         button.addActionListener(e -> {
             Main.reset();
-            if(Objects.equals(text, testText)) {
+            if(Objects.equals(text, growthRateButtonText)) {
                 // Initiating the test.
                 if(isTesting){
                     isTesting = false;

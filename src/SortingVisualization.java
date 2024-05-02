@@ -2,30 +2,42 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 
 public class SortingVisualization extends JPanel {
     private static final int INIT_ARRAY_SIZE = 100;
-    private static  int rectWidth = 10;
+    private static int rectWidth = 10;
     private static final int SPACING = 1;
     private static final int WIDTH = INIT_ARRAY_SIZE * (rectWidth + SPACING);
     private static final int HEIGHT = 500;
     private static int delay = 5; // Milliseconds
+
     private static final Color DEFUALT_COLOR = new Color(95, 137, 217);
     private static final Color SELECTED_COLOR = new Color(255, 0, 0);
     private static Thread sortingThread;
 
-    private static final int[] sampleSizes = {100, 200, 300, 400, 500, 600, 700, 800, 900, 1000};
-    private static final int runTestFor = sampleSizes.length;
+    private final int[] largeSampleSizes = {10000, 10000, 20000, 30000, 40000, 100000, 200000};
+    private final int[] smallSampleSizes = {100, 200, 300, 400, 500, 600, 700, 800, 900, 1000};
+    private final int[] smallerSampleSizes = {100, 200, 300};
 
-    private static final ArrayList<Long> timeTakenInTest = new ArrayList<>();
+
+    private final int[] sampleSizes = smallerSampleSizes;
+    private static final int TEST_DELAY = 1;
+
+    private final int runTestFor = sampleSizes.length;
+
+    private final static ArrayList<Long> timeTakenInTest = new ArrayList<>();
 
 
     private double[] array;
@@ -74,9 +86,10 @@ public class SortingVisualization extends JPanel {
 
     public void start(String algorithm, boolean test) {
         if (test) {
-            setDelay(1);
+            setDelay(TEST_DELAY);
             runFor(runTestFor, algorithm);
         } else {
+            setDelay(delay);
             runFor(1, algorithm);
 
         }
@@ -84,13 +97,6 @@ public class SortingVisualization extends JPanel {
 
     }
 
-
-    private void initTest() {
-        JOptionPane.showMessageDialog(null, "Default delay will be reduced to improve performance" +
-                "and speed up the process of plotting the graph");
-
-
-    }
 
     private void matchSortingAlgorithm(String algorithm, int size) {
         switch (algorithm) {
@@ -148,7 +154,7 @@ public class SortingVisualization extends JPanel {
 
                 SwingUtilities.invokeLater(() -> {
                     JFrame frame = new JFrame("Runtime Growth of " + algorithm + " Algorithm");
-                    frame.setContentPane(createChartPanel());
+                    frame.setContentPane(createChartPanel(algorithm));
                     frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                     frame.pack();
                     frame.setLocationRelativeTo(null);
@@ -158,11 +164,6 @@ public class SortingVisualization extends JPanel {
 
             });
             plottingThread.start();
-
-
-
-
-
 
 
         }
@@ -184,25 +185,71 @@ public class SortingVisualization extends JPanel {
 
     }
 
-    private static JPanel createChartPanel() {
+    private JPanel createChartPanel(String algorithm) {
         // Create a dataset
         XYSeriesCollection dataset = new XYSeriesCollection();
-        XYSeries series = new XYSeries("Series Name");
 
+        // First series
+        XYSeries actualRuntime = new XYSeries(algorithm + " Algorithm Actual Runtime");
         // Assuming you have two arrays x[] and y[]
         int[] x = sampleSizes; // Your X data
-        long[] y = new long[timeTakenInTest.size()] ; // Your Y data
+        int[] y = new int[timeTakenInTest.size()]; // Your Y data for the first series
 
         for (int i = 0; i < timeTakenInTest.size(); i++) {
-            y[i] = timeTakenInTest.get(i);
+            y[i] = Math.toIntExact(timeTakenInTest.get(i));
         }
 
-        // Populate the series with data
-        for (int i = 0; i < y.length; i++) {
-            series.add(x[i], y[i]);
+        // Populate the first series with data
+        try {
+            for (int i = 0; i < x.length; i++) {
+                actualRuntime.add(x[i], y[i]);
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            e.printStackTrace();
         }
 
-        dataset.addSeries(series);
+        dataset.addSeries(actualRuntime);
+
+        // Second series
+        XYSeries theoreticalRuntime = new XYSeries(algorithm + " Algorithm Theoretical Runtime");
+        // Populate the second series with data
+        // For now let's hard code it to merge sort (nlogn)
+
+        double timeAverage = average(y, "n");
+        switch (algorithm) {
+            case "Bubble Sort":
+            case "Selection Sort":
+            case "Insertion Sort":
+                for (int j : x) {
+                    double proportion = timeAverage / average(x, "n^2");
+                    theoreticalRuntime.add(j, (int) (proportion * j * j));
+                }
+                break;
+            case "Merge Sort":
+            case "Quick Sort":
+                for (int j : x) {
+                    double proportion = timeAverage / average(x, "nlogn");
+                    theoreticalRuntime.add(j, (int) (proportion * j * Math.log(j)));
+                }
+                break;
+            case "Linear Search":
+                for (int j : x) {
+                    double proportion = timeAverage / average(x, "n");
+                    theoreticalRuntime.add(j, (int) (proportion * j));
+                }
+                break;
+            case "Binary Search":
+                for (int j : x) {
+                    double proportion = timeAverage / average(x, "logn");
+                    theoreticalRuntime.add(j, (int) (proportion * Math.log(j)));
+                }
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid sorting algorithm");
+        }
+
+
+        dataset.addSeries(theoreticalRuntime);
 
         // Create a chart
         JFreeChart chart = ChartFactory.createXYLineChart(
@@ -216,7 +263,41 @@ public class SortingVisualization extends JPanel {
                 false
         );
 
+        // Customize the renderer
+        XYPlot plot = chart.getXYPlot();
+        XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
+        renderer.setSeriesPaint(0, Color.RED); // First series color
+        renderer.setSeriesPaint(1, Color.BLUE); // Second series color
+        plot.setRenderer(renderer);
+
+        timeTakenInTest.clear();
+
         return new ChartPanel(chart);
+    }
+
+    private static double average(int[] array, String type) {
+        int sum = 0;
+        for (int l : array) {
+            // types are "n", "n^2", "nlogn", "logn"
+            switch (type) {
+                case "n":
+                    sum += l;
+                    break;
+                case "n^2":
+                    sum += l * l;
+                    break;
+                case "nlogn":
+                    sum += (int) (l * Math.log(l));
+                    break;
+                case "logn":
+                    sum += (int) (Math.log(l));
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid type");
+            }
+        }
+
+        return (double) sum / array.length;
     }
 
 
@@ -236,7 +317,7 @@ public class SortingVisualization extends JPanel {
             int mid = low + (high - low) / 2;
             rectLabelMap.get(array[mid]).color = Color.RED;
             repaint();
-            pause(100);
+            pause();
             if (array[mid] == key) {
                 rectLabelMap.get(array[mid]).color = Color.GREEN;
                 repaint();
@@ -257,7 +338,7 @@ public class SortingVisualization extends JPanel {
         for (int i = 0; i < INIT_ARRAY_SIZE; i++) {
             rectLabelMap.get(array[i]).color = SELECTED_COLOR;
             repaint();
-            pause(100);
+            pause();
             if (array[i] == key) {
                 rectLabelMap.get(array[i]).color = Color.GREEN;
                 repaint();
@@ -466,13 +547,7 @@ public class SortingVisualization extends JPanel {
         }
     }
 
-    private void pause(int delay) {
-        try {
-            Thread.sleep(delay);
-        } catch (InterruptedException e) {
-            e.fillInStackTrace();
-        }
-    }
+
 
     @Override
     protected void paintComponent(Graphics g) {

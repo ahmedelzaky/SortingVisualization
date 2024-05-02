@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5ca6a16e-7020-4a9b-8c03-1f7651beb7af" name="Changes" comment="add message show time taken for sorting">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/guicedee_services_jfreechart.xml" afterDir="false" />
+    <list default="true" id="5ca6a16e-7020-4a9b-8c03-1f7651beb7af" name="Changes" comment="added plotting the algorithm growth rate -Kasim">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SortingVisualization.iml" beforeDir="false" afterPath="$PROJECT_DIR$/SortingVisualization.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ControlPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ControlPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/SortingVisualization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SortingVisualization.java" afterDir="false" />
     </list>
@@ -114,7 +112,7 @@
       <workItem from="1714171317226" duration="365000" />
       <workItem from="1714298798506" duration="318000" />
       <workItem from="1714507714346" duration="1209000" />
-      <workItem from="1714640432665" duration="1051000" />
+      <workItem from="1714640432665" duration="7413000" />
     </task>
     <task id="LOCAL-00001" summary="change colors">
       <option name="closed" value="true" />
@@ -132,7 +130,14 @@
       <option name="project" value="LOCAL" />
       <updated>1714508320648</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="added plotting the algorithm growth rate -Kasim">
+      <created>1714641831949</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1714641831949</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -152,7 +157,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="change colors" />
     <MESSAGE value="add message show time taken for sorting" />
-    <option name="LAST_COMMIT_MESSAGE" value="add message show time taken for sorting" />
+    <MESSAGE value="added plotting the algorithm growth rate -Kasim" />
+    <option name="LAST_COMMIT_MESSAGE" value="added plotting the algorithm growth rate -Kasim" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

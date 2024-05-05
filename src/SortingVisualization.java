@@ -28,10 +28,11 @@ public class SortingVisualization extends JPanel {
     private static final Color DEFUALT_COLOR = new Color(95, 137, 217);
     private static final Color SELECTED_COLOR = new Color(255, 0, 0);
     private static Thread sortingThread;
+    private static Thread plottingThread;
 
-    private final int[] largeSampleSizes = {10000, 10000, 20000, 30000, 40000, 100000, 200000};
-    private final int[] smallSampleSizes = {100, 200, 300, 400, 500, 600, 700, 800, 900, 1000};
-    private final int[] smallerSampleSizes = {100, 200, 300};
+//    private final int[] largeSampleSizes = {10000, 10000, 20000, 30000, 40000, 100000, 200000};
+//    private final int[] smallSampleSizes = {100, 200, 300, 400, 500, 600, 700, 800, 900, 1000};
+//    private final int[] smallerSampleSizes = {100, 200, 300};
 
 
     private final int[] sampleSizes = generateSeriesOfSizes(100, true, 10, 5);
@@ -52,6 +53,12 @@ public class SortingVisualization extends JPanel {
 
     }
 
+    /**
+     * this method Creates an array of random numbers
+     * and initializes the rectangles
+     *
+     * @param size the size of the array
+     */
     private void prepareArray(int size) {
         array = new double[size];
         rectLabelMap = new ConcurrentHashMap<>();
@@ -75,6 +82,11 @@ public class SortingVisualization extends JPanel {
         }
     }
 
+    /**
+     * this method initializes the rectangles
+     *
+     * @param size the size of the array
+     */
     private void initializeRectangles(int size) {
         for (int i = 0; i < size; i++) {
             rectLabelMap.put(
@@ -87,6 +99,15 @@ public class SortingVisualization extends JPanel {
         }
     }
 
+    /**
+     * this method generates a series of sizes
+     *
+     * @param initial     the initial size of the series
+     * @param isGeometric if the series is geometric or arithmetic
+     * @param factor      the factor by which the size of the series increases
+     * @param size        the size of the series
+     * @return an array of sizes
+     */
     int[] generateSeriesOfSizes(int initial, boolean isGeometric, int factor, int size) {
         int[] series = new int[size];
         if (isGeometric) {
@@ -111,10 +132,19 @@ public class SortingVisualization extends JPanel {
         System.out.println();
     }
 
+    /**
+     * this method sets the optimal width of the rectangles
+     */
     private void setOptimalRectWidth() {
         rectWidth = Math.max((WIDTH / array.length - SPACING), 1);
     }
 
+    /**
+     * this method starts the algorithm
+     *
+     * @param algorithm the algorithm to be run
+     * @param test      if the algorithm is to be tested
+     */
     public void start(String algorithm, boolean test) {
         if (test) {
             setDelay(TEST_DELAY);
@@ -123,7 +153,6 @@ public class SortingVisualization extends JPanel {
             setDelay(DEFAULT_DELAY);
             if (algorithm.equals(("Linear Search")) || algorithm.equals("Binary Search"))
                 setDelay(100);
-
             runFor(1, algorithm);
 
         }
@@ -131,7 +160,12 @@ public class SortingVisualization extends JPanel {
 
     }
 
-
+    /**
+     * gets the algorithm to be run and the size of the array
+     *
+     * @param algorithm the algorithm to be run
+     * @param size      the size of the array
+     */
     private void matchSortingAlgorithm(String algorithm, int size) {
         switch (algorithm) {
             case "Bubble Sort":
@@ -161,13 +195,19 @@ public class SortingVisualization extends JPanel {
 
     }
 
+    /**
+     * this method runs the algorithm for a given number of times
+     *
+     * @param times     the number of times the algorithm is to be run
+     * @param algorithm the algorithm to be run
+     */
     private void runFor(int times, String algorithm) {
         if (times == 1) {
             setOptimalRectWidth();
             sortingThread = new Thread(() -> threadOperation(algorithm, true));
             sortingThread.start();
         } else {
-            Thread plottingThread = new Thread(() -> {
+            plottingThread = new Thread(() -> {
                 for (int i = 0; i < times; i++) {
 
                     if (i != 0) {
@@ -179,12 +219,15 @@ public class SortingVisualization extends JPanel {
                     try {
                         sortingThread.join();
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        e.fillInStackTrace();
                     }
 
                     rectWidth = rectWidth == 1 ? rectWidth : rectWidth / 2;
-
+                    if (Thread.currentThread().getId() != plottingThread.getId()) {
+                        return;
+                    }
                 }
+
 
                 SwingUtilities.invokeLater(() -> {
                     JFrame frame = new JFrame("Runtime Growth of " + algorithm + " Algorithm");
@@ -203,6 +246,12 @@ public class SortingVisualization extends JPanel {
         }
     }
 
+    /**
+     * this method runs the algorithm in a separate thread
+     *
+     * @param algorithm the algorithm to be run
+     * @param show      if the time taken is to be shown
+     */
     void threadOperation(String algorithm, boolean show) {
 
         long start = System.currentTimeMillis();
@@ -223,6 +272,12 @@ public class SortingVisualization extends JPanel {
 
     }
 
+    /**
+     * this method creates a JPanel containing the chart of time Complexity of the algorithm
+     *
+     * @param algorithm the algorithm to be run
+     * @return a JPanel containing the chart
+     */
     private JPanel createChartPanel(String algorithm) {
         // Create a dataset
         XYSeriesCollection dataset = new XYSeriesCollection();
@@ -243,7 +298,7 @@ public class SortingVisualization extends JPanel {
                 actualRuntime.add(x[i], y[i]);
             }
         } catch (ArrayIndexOutOfBoundsException e) {
-            e.printStackTrace();
+            e.fillInStackTrace();
         }
 
         dataset.addSeries(actualRuntime);
@@ -313,6 +368,13 @@ public class SortingVisualization extends JPanel {
         return new ChartPanel(chart);
     }
 
+    /**
+     * this method calculates the average of an array
+     *
+     * @param array the array to be averaged
+     * @param type  the type of the array
+     * @return the average of the array
+     */
     private static double average(int[] array, String type) {
         int sum = 0;
         for (int l : array) {
@@ -337,9 +399,6 @@ public class SortingVisualization extends JPanel {
 
         return (double) sum / array.length;
     }
-
-
-    // Graph plotting method
 
     private void binarySearch(int size) {
         Arrays.sort(array);
@@ -388,7 +447,6 @@ public class SortingVisualization extends JPanel {
         }
     }
 
-
     public void bubbleSort(int size) {
         for (int i = 0; i < size - 1; i++) {
             for (int j = 0; j < size - i - 1; j++) {
@@ -428,6 +486,7 @@ public class SortingVisualization extends JPanel {
 
     }
 
+
     public void insertionSort(int size) {
 
         for (int i = 1; i < size; i++) {
@@ -449,7 +508,6 @@ public class SortingVisualization extends JPanel {
         paintSortedColor(size);
 
     }
-
 
     public void mergeSort(int size) {
         mergeSort(0, size - 1);
@@ -530,6 +588,7 @@ public class SortingVisualization extends JPanel {
         paintSortedColor(size);
     }
 
+
     private void quickSort(int low, int high) {
         if (low < high) {
             int pi = partition(low, high);
@@ -582,7 +641,11 @@ public class SortingVisualization extends JPanel {
         }
     }
 
-
+    /**
+     * this method paints the rectangles
+     *
+     * @param g the graphics object
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

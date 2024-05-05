@@ -1,7 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.util.Objects;
 
 
@@ -49,8 +47,6 @@ public class ControlPanel extends JPanel {
         sliderPanel.add(new JLabel("Delay:"));
         sliderPanel.add(delaySlider);
 
-        // Adding a dropdown menu for selecting the size of the array.
-
         add(sortingButtons, BorderLayout.NORTH);
         add(searchingButtons, BorderLayout.CENTER);
         add(sliderPanel, BorderLayout.SOUTH);
@@ -67,11 +63,7 @@ public class ControlPanel extends JPanel {
         }
 
 
-        dropdown.addItemListener(new ItemListener() {
-            public void itemStateChanged(ItemEvent e) {
-                System.out.println("Selected: " + dropdown.getSelectedItem());
-            }
-        });
+        dropdown.addItemListener(e -> System.out.println("Selected: " + dropdown.getSelectedItem()));
 
         add(dropdown);
 
@@ -81,7 +73,12 @@ public class ControlPanel extends JPanel {
         return dropdown;
     }
 
-
+    /**
+     * Creates a JButton with the specified text and add action listener to it depending on the text.
+     *
+     * @param text The text to be displayed on the button.
+     * @return JButton with the specified text.
+     */
     private JButton createButton(String text) {
         JButton button = new JButton(text);
         button.setPreferredSize(new Dimension(170, 30));
@@ -130,7 +127,11 @@ public class ControlPanel extends JPanel {
         return button;
     }
 
-
+    /**
+     * Creates a JSlider to control the delay of the sorting visualization.
+     *
+     * @return JSlider to control the delay of the sorting visualization.
+     */
     private JSlider createDelaySlider() {
         JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 100, 5);
         slider.setPreferredSize(new Dimension(200, 50));

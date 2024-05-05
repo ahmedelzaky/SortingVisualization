@@ -107,6 +107,7 @@ public class ControlPanel extends JPanel {
                     isTesting = false;
                     enableSlider();
                     button.setBackground(BUTTON_COLOR);
+                    Main.sortingVisualization.setDelay(SortingVisualization.DEFAULT_DELAY);
                 } else {
                     isTesting = true;
                     disableSlider();
@@ -116,6 +117,10 @@ public class ControlPanel extends JPanel {
             } else {
                 if (text.equals("Linear Search") || text.equals("Binary Search") || isTesting) {
                     Main.controlPanel.disableSlider();
+
+                    if (!isTesting)
+                        Main.sortingVisualization.setDelay(100);
+
                 } else {
                     Main.controlPanel.enableSlider();
                 }

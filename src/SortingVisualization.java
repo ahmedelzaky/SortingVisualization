@@ -16,12 +16,14 @@ import java.util.concurrent.ConcurrentHashMap;
 
 
 public class SortingVisualization extends JPanel {
+    public static final int DEFAULT_DELAY = 5;
     private static final int INIT_ARRAY_SIZE = 100;
     private static final int SPACING = 1;
     private static final int WIDTH = 1720;
     private static final int HEIGHT = 500;
     private static int rectWidth = WIDTH / INIT_ARRAY_SIZE - SPACING;
-    private static int delay = 5; // Milliseconds
+    private static int delay = DEFAULT_DELAY;
+
 
     private static final Color DEFUALT_COLOR = new Color(95, 137, 217);
     private static final Color SELECTED_COLOR = new Color(255, 0, 0);
@@ -118,7 +120,10 @@ public class SortingVisualization extends JPanel {
             setDelay(TEST_DELAY);
             runFor(runTestFor, algorithm);
         } else {
-            setDelay(delay);
+            setDelay(DEFAULT_DELAY);
+            if (algorithm.equals(("Linear Search")) || algorithm.equals("Binary Search"))
+                setDelay(100);
+
             runFor(1, algorithm);
 
         }

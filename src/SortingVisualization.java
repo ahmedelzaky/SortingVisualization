@@ -19,7 +19,7 @@ public class SortingVisualization extends JPanel {
     public static final int DEFAULT_DELAY = 5;
     private static final int INIT_ARRAY_SIZE = 100;
     private static final int SPACING = 1;
-    private static final int WIDTH = 1720;
+    private static final int WIDTH = 1500;
     private static final int HEIGHT = 500;
     private static int rectWidth = WIDTH / INIT_ARRAY_SIZE - SPACING;
     private static int delay = DEFAULT_DELAY;
@@ -164,7 +164,7 @@ public class SortingVisualization extends JPanel {
     private void runFor(int times, String algorithm) {
         if (times == 1) {
             setOptimalRectWidth();
-            sortingThread = new Thread(() -> threadOperation(algorithm));
+            sortingThread = new Thread(() -> threadOperation(algorithm, true));
             sortingThread.start();
         } else {
             Thread plottingThread = new Thread(() -> {
@@ -173,7 +173,7 @@ public class SortingVisualization extends JPanel {
                     if (i != 0) {
                         prepareArray(sampleSizes[i]);
                     }
-                    sortingThread = new Thread(() -> threadOperation(algorithm));
+                    sortingThread = new Thread(() -> threadOperation(algorithm, false));
                     sortingThread.start();
 
                     try {
@@ -203,7 +203,7 @@ public class SortingVisualization extends JPanel {
         }
     }
 
-    void threadOperation(String algorithm) {
+    void threadOperation(String algorithm, boolean show) {
 
         long start = System.currentTimeMillis();
         matchSortingAlgorithm(algorithm, array.length);
@@ -215,7 +215,11 @@ public class SortingVisualization extends JPanel {
         System.out.println("Time taken: " + timeTaken +
                 " milliseconds. Array size:" + array.length);
         timeTakenInTest.add(timeTaken);
-        //JOptionPane.showMessageDialog(null, "Time taken: " + (end - start) + " milliseconds");
+
+        System.out.println("Array sorted: " + isArraySorted(array));
+
+        if (show)
+            JOptionPane.showMessageDialog(null, "Time taken: " + (end - start) + " milliseconds");
 
     }
 
@@ -592,6 +596,15 @@ public class SortingVisualization extends JPanel {
     public void setDelay(int delay) {
         SortingVisualization.delay = delay;
         System.out.println("Delay set to " + delay + " milliseconds");
+    }
+
+    private boolean isArraySorted(double[] array) {
+        for (int i = 0; i < array.length - 1; i++) {
+            if (array[i] > array[i + 1]) {
+                return false;
+            }
+        }
+        return true;
     }
 
     static class Rectangle extends java.awt.Rectangle {

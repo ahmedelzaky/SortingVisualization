@@ -28,3 +28,10 @@ different sorting algorithms and visualize their sorting process in real-time.
 - The control panel allows you to select different sorting algorithms.
 - Click on the buttons corresponding to the sorting algorithms to start their visualization.
 
+## Demo
+
+
+https://github.com/ahmedelzaky/SortingVisualization/assets/89663624/2a8b2572-8bb3-4663-be0e-6c759e0b70e6
+
+
+

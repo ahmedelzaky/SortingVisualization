@@ -567,9 +567,9 @@ public class SortingVisualization extends JPanel {
         array[j] = temp;
         rectLabelMap.get(array[i]).color = SELECTED_COLOR;
         rectLabelMap.get(array[j]).color = SELECTED_COLOR;
-        int tempX = rectLabelMap.get(array[i]).x;
-        rectLabelMap.get(array[i]).x = rectLabelMap.get(array[j]).x;
-        rectLabelMap.get(array[j]).x = tempX;
+//        int tempX = rectLabelMap.get(array[i]).x;
+        rectLabelMap.get(array[i]).x = i * (rectWidth + SPACING);
+        rectLabelMap.get(array[j]).x = j * (rectWidth + SPACING);
         repaint();
     }
 

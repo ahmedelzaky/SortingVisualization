@@ -30,12 +30,7 @@ public class SortingVisualization extends JPanel {
     private static Thread sortingThread;
     private static Thread plottingThread;
 
-//    private final int[] largeSampleSizes = {10000, 10000, 20000, 30000, 40000, 100000, 200000};
-//    private final int[] smallSampleSizes = {100, 200, 300, 400, 500, 600, 700, 800, 900, 1000};
-//    private final int[] smallerSampleSizes = {100, 200, 300};
-
-
-    private final int[] sampleSizes = generateSeriesOfSizes(100, true, 10, 5);
+    private final int[] sampleSizes = generateSeries(100, true, 2, 15);
     private static final int TEST_DELAY = 0;
 
     private final int runTestFor = sampleSizes.length;
@@ -108,11 +103,13 @@ public class SortingVisualization extends JPanel {
      * @param size        the size of the series
      * @return an array of sizes
      */
-    int[] generateSeriesOfSizes(int initial, boolean isGeometric, int factor, int size) {
+    int[] generateSeries(int initial, boolean isGeometric, int factor, int size) {
         int[] series = new int[size];
+        int lastValue = initial;
         if (isGeometric) {
             for (int i = 0; i < size; i++) {
-                series[i] = initial * (i + 1) * factor;
+                lastValue = lastValue * factor;
+                series[i] = lastValue;
             }
         } else {
             for (int i = 0; i < size; i++) {
@@ -304,7 +301,7 @@ public class SortingVisualization extends JPanel {
         dataset.addSeries(actualRuntime);
 
         // Second series
-        XYSeries theoreticalRuntime = new XYSeries(algorithm + " Algorithm Theoretical Runtime");
+        XYSeries theoreticalRuntime ;
         // Populate the second series with data
         // For now let's hard code it to merge sort (nlogn)
 
@@ -313,6 +310,7 @@ public class SortingVisualization extends JPanel {
             case "Bubble Sort":
             case "Selection Sort":
             case "Insertion Sort":
+                theoreticalRuntime = new XYSeries(algorithm + " Algorithm Theoretical Runtime " + "(n^2)");
                 for (int j : x) {
                     double proportion = timeAverage / average(x, "n^2");
                     theoreticalRuntime.add(j, (int) (proportion * j * j));
@@ -320,18 +318,21 @@ public class SortingVisualization extends JPanel {
                 break;
             case "Merge Sort":
             case "Quick Sort":
+                    theoreticalRuntime = new XYSeries(algorithm + " Algorithm Theoretical Runtime " + "(nlogn)");
                 for (int j : x) {
                     double proportion = timeAverage / average(x, "nlogn");
                     theoreticalRuntime.add(j, (int) (proportion * j * Math.log(j)));
                 }
                 break;
             case "Linear Search":
+                    theoreticalRuntime = new XYSeries(algorithm + " Algorithm Theoretical Runtime " + "(n)");
                 for (int j : x) {
                     double proportion = timeAverage / average(x, "n");
                     theoreticalRuntime.add(j, (int) (proportion * j));
                 }
                 break;
             case "Binary Search":
+                    theoreticalRuntime = new XYSeries(algorithm + " Algorithm Theoretical Runtime " + "(logn)");
                 for (int j : x) {
                     double proportion = timeAverage / average(x, "logn");
                     theoreticalRuntime.add(j, (int) (proportion * Math.log(j)));
@@ -343,7 +344,7 @@ public class SortingVisualization extends JPanel {
 
 
         dataset.addSeries(theoreticalRuntime);
-
+        
         // Create a chart
         JFreeChart chart = ChartFactory.createXYLineChart(
                 "XY Line Chart", // Chart title

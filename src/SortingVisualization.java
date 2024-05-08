@@ -387,9 +387,9 @@ public class SortingVisualization extends JPanel {
         
         // Create a chart
         JFreeChart chart = ChartFactory.createXYLineChart(
-                "XY Line Chart", // Chart title
-                "X-Axis Label", // X-Axis Label
-                "Y-Axis Label", // Y-Axis Label
+                "Size VS. Time Plot", // Chart title
+                "Sample Size", // X-Axis Label
+                "Time Taken", // Y-Axis Label
                 dataset, // Dataset
                 PlotOrientation.VERTICAL,
                 true, // Show legend

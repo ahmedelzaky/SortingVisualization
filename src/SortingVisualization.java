@@ -17,6 +17,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class SortingVisualization extends JPanel {
     public static final int DEFAULT_DELAY = 5;
+    public static final int SEARCH_DELAY = 100;
+    private static final int PLOTTING_SORTING_DELAY = 0;
+    public static final int PLOTTING_SEARCH_DELAY = 1;
+
     private static final int INIT_ARRAY_SIZE = 100;
     private static final int SPACING = 1;
     private static final int WIDTH = 1500;
@@ -29,7 +33,6 @@ public class SortingVisualization extends JPanel {
     private static final Color SELECTED_COLOR = new Color(255, 0, 0);
     private static Thread sortingThread, plottingThread;
     private int[] sampleSizes = generateSeries(10, true, 2, 15);
-    private static final int SORTING_PLOTTING_DELAY = 0;
 
 
 
@@ -159,14 +162,14 @@ public class SortingVisualization extends JPanel {
     void fineTuneDelay(String algorithm, boolean isPlottingGrowthRate){
        if(isPlottingGrowthRate){
            if(algorithm.equals("Linear Search") || algorithm.equals("Binary Search")){
-               setDelay(1);
+               setDelay(PLOTTING_SEARCH_DELAY);
            }else {
-               setDelay(SORTING_PLOTTING_DELAY);
+               setDelay(PLOTTING_SORTING_DELAY);
            }
        }else{
            setDelay(ControlPanel.delaySlider.getValue());
            if (algorithm.equals(("Linear Search")) || algorithm.equals("Binary Search"))
-               setDelay(100);
+               setDelay(SEARCH_DELAY);
 
        }
 
@@ -185,7 +188,7 @@ public class SortingVisualization extends JPanel {
                     sampleSizes = generateSeries(100, false, 128, 45);
                     break;
                 case "Linear Search":
-                    sampleSizes = generateSeries(100, false,2 , 45);
+                    sampleSizes = generateSeries(100, false,2 , 30);
                     break;
                 case "Binary Search":
                     sampleSizes = generateSeries(100, false, 1024, 60);

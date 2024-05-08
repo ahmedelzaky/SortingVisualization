@@ -7,6 +7,7 @@
     <list default="true" id="5ca6a16e-7020-4a9b-8c03-1f7651beb7af" name="Changes" comment="added plotting the algorithm growth rate -Kasim">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ControlPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ControlPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/SortingVisualization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SortingVisualization.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -113,6 +114,8 @@
       <workItem from="1714298798506" duration="318000" />
       <workItem from="1714507714346" duration="1209000" />
       <workItem from="1714640432665" duration="7413000" />
+      <workItem from="1715177283770" duration="115000" />
+      <workItem from="1715177421492" duration="1209000" />
     </task>
     <task id="LOCAL-00001" summary="change colors">
       <option name="closed" value="true" />

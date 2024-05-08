@@ -10,7 +10,7 @@ public class ControlPanel extends JPanel {
     private static final Color BUTTON_TEXT_COLOR = Color.WHITE;
     private final String growthRateButtonText = "Plot Growth Rate";
     private static final Font BUTTON_FONT = new Font("Arial", Font.BOLD, 14);
-    private final JSlider delaySlider;
+    public static JSlider delaySlider;
     private boolean isTesting = false;
 
 
@@ -142,6 +142,7 @@ public class ControlPanel extends JPanel {
         slider.addChangeListener(e -> {
             int delay = slider.getValue();
             Main.sortingVisualization.setDelay(delay);
+
         });
         slider.setEnabled(false);
         return slider;

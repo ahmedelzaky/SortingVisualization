@@ -150,7 +150,7 @@ public class SortingVisualization extends JPanel {
             setDelay(TEST_DELAY);
             runFor(runTestFor, algorithm);
         } else {
-            setDelay(DEFAULT_DELAY);
+            setDelay(ControlPanel.delaySlider.getValue());
             if (algorithm.equals(("Linear Search")) || algorithm.equals("Binary Search"))
                 setDelay(100);
             runFor(1, algorithm);
@@ -441,7 +441,6 @@ public class SortingVisualization extends JPanel {
                 repaint();
                 break;
             }
-            rectLabelMap.get(array[i]).color = DEFUALT_COLOR;
             repaint();
             pause();
         }

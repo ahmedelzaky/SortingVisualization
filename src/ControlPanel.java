@@ -52,7 +52,7 @@ public class ControlPanel extends JPanel {
         add(sliderPanel, BorderLayout.SOUTH);
     }
 
-
+    @Deprecated
     public Choice createDropDown() {
 
 
@@ -121,6 +121,7 @@ public class ControlPanel extends JPanel {
                 } else {
                     Main.controlPanel.enableSlider();
                 }
+                // The sorting visualization is started with the selected algorithm.
                 Main.sortingVisualization.start(text, isTesting);
             }
         });

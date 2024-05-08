@@ -27,13 +27,11 @@ public class SortingVisualization extends JPanel {
 
     private static final Color DEFUALT_COLOR = new Color(95, 137, 217);
     private static final Color SELECTED_COLOR = new Color(255, 0, 0);
-    private static Thread sortingThread;
-    private static Thread plottingThread;
+    private static Thread sortingThread, plottingThread;
+    private int[] sampleSizes = generateSeries(10, true, 2, 15);
+    private static final int SORTING_PLOTTING_DELAY = 0;
 
-    private final int[] sampleSizes = generateSeries(100, true, 2, 15);
-    private static final int TEST_DELAY = 0;
 
-    private final int runTestFor = sampleSizes.length;
 
     private final static ArrayList<Long> timeTakenInTest = new ArrayList<>();
 
@@ -103,17 +101,17 @@ public class SortingVisualization extends JPanel {
      * @param size        the size of the series
      * @return an array of sizes
      */
-    int[] generateSeries(int initial, boolean isGeometric, int factor, int size) {
+    int[] generateSeries(int initial, boolean isGeometric, double factor, int size) {
         int[] series = new int[size];
-        int lastValue = initial;
+        double lastValue = initial;
         if (isGeometric) {
             for (int i = 0; i < size; i++) {
+                series[i] = (int)lastValue;
                 lastValue = lastValue * factor;
-                series[i] = lastValue;
             }
         } else {
             for (int i = 0; i < size; i++) {
-                series[i] = initial + i * factor;
+                series[i] = (int)(initial + i * factor);
             }
         }
         printArray(series);
@@ -140,21 +138,63 @@ public class SortingVisualization extends JPanel {
      * this method starts the algorithm
      *
      * @param algorithm the algorithm to be run
-     * @param test      if the algorithm is to be tested
+     * @param isPlottingGrowthRate      if the algorithm is to be tested
      */
-    public void start(String algorithm, boolean test) {
-        if (test) {
-            setDelay(TEST_DELAY);
-            runFor(runTestFor, algorithm);
+    public void start(String algorithm, boolean isPlottingGrowthRate) {
+        fineTuneDelay(algorithm, isPlottingGrowthRate);
+        fineTuneSampleSize(algorithm, isPlottingGrowthRate);
+        if (isPlottingGrowthRate) {
+            prepareArray(sampleSizes[0]);
+            runFor(runTestFor(), algorithm);
         } else {
-            setDelay(ControlPanel.delaySlider.getValue());
-            if (algorithm.equals(("Linear Search")) || algorithm.equals("Binary Search"))
-                setDelay(100);
             runFor(1, algorithm);
-
         }
 
 
+    }
+    int runTestFor(){
+        return sampleSizes.length;
+    }
+
+    void fineTuneDelay(String algorithm, boolean isPlottingGrowthRate){
+       if(isPlottingGrowthRate){
+           if(algorithm.equals("Linear Search") || algorithm.equals("Binary Search")){
+               setDelay(1);
+           }else {
+               setDelay(SORTING_PLOTTING_DELAY);
+           }
+       }else{
+           setDelay(ControlPanel.delaySlider.getValue());
+           if (algorithm.equals(("Linear Search")) || algorithm.equals("Binary Search"))
+               setDelay(100);
+
+       }
+
+    }
+
+    void fineTuneSampleSize(String algorithm, boolean isPlottingGrowthRate){
+        if(isPlottingGrowthRate){
+            switch (algorithm){
+                case "Bubble Sort":
+                case "Selection Sort":
+                case "Insertion Sort":
+                    sampleSizes = generateSeries(100, false, 64, 20);
+                    break;
+                case "Merge Sort":
+                case "Quick Sort":
+                    sampleSizes = generateSeries(100, false, 128, 45);
+                    break;
+                case "Linear Search":
+                    sampleSizes = generateSeries(100, false,2 , 45);
+                    break;
+                case "Binary Search":
+                    sampleSizes = generateSeries(100, false, 1024, 60);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid sorting algorithm");
+            }
+            prepareArray(sampleSizes[0]);
+        }
     }
 
     /**
@@ -429,21 +469,25 @@ public class SortingVisualization extends JPanel {
     }
 
     private void linearSearch(int size) {
-        pause();
-        Random rand = new Random();
-        int index = rand.nextInt(size) - 1;
-        double key = array[index];
-        for (int i = 0; i < size; i++) {
-            rectLabelMap.get(array[i]).color = SELECTED_COLOR;
-            repaint();
+        try {
             pause();
-            if (array[i] == key) {
-                rectLabelMap.get(array[i]).color = Color.GREEN;
+            Random rand = new Random();
+            int index = rand.nextInt(size) - 1;
+            double key = array[index];
+            for (int i = 0; i < size; i++) {
+                rectLabelMap.get(array[i]).color = SELECTED_COLOR;
                 repaint();
-                break;
+                pause();
+                if (array[i] == key) {
+                    rectLabelMap.get(array[i]).color = Color.GREEN;
+                    repaint();
+                    break;
+                }
+                repaint();
+                pause();
             }
-            repaint();
-            pause();
+        }catch (ArrayIndexOutOfBoundsException ignored){
+
         }
     }
 

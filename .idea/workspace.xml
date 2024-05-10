@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="5ca6a16e-7020-4a9b-8c03-1f7651beb7af" name="Changes" comment="small change -Kasim">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ControlPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ControlPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/SortingVisualization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SortingVisualization.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -120,6 +119,8 @@
       <workItem from="1715200561140" duration="722000" />
       <workItem from="1715271805700" duration="86000" />
       <workItem from="1715351224815" duration="2904000" />
+      <workItem from="1715369847583" duration="327000" />
+      <workItem from="1715375675964" duration="1095000" />
     </task>
     <task id="LOCAL-00001" summary="change colors">
       <option name="closed" value="true" />

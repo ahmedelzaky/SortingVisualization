@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5ca6a16e-7020-4a9b-8c03-1f7651beb7af" name="Changes" comment="added plotting the algorithm growth rate -Kasim">
+    <list default="true" id="5ca6a16e-7020-4a9b-8c03-1f7651beb7af" name="Changes" comment="small change -Kasim">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ControlPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ControlPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/SortingVisualization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SortingVisualization.java" afterDir="false" />
@@ -57,6 +57,7 @@
     &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;TODO_SCOPE&quot;: &quot;All Places&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
@@ -115,6 +116,10 @@
       <workItem from="1714640432665" duration="7413000" />
       <workItem from="1715177283770" duration="115000" />
       <workItem from="1715177421492" duration="1209000" />
+      <workItem from="1715199944104" duration="118000" />
+      <workItem from="1715200561140" duration="722000" />
+      <workItem from="1715271805700" duration="86000" />
+      <workItem from="1715351224815" duration="2904000" />
     </task>
     <task id="LOCAL-00001" summary="change colors">
       <option name="closed" value="true" />
@@ -139,7 +144,28 @@
       <option name="project" value="LOCAL" />
       <updated>1714641831949</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="enhanced the sample sizes and the plot shapes and consistencies -Kasim">
+      <created>1715199296085</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1715199296087</updated>
+    </task>
+    <task id="LOCAL-00005" summary="small change -Kasim">
+      <created>1715200699989</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1715200699989</updated>
+    </task>
+    <task id="LOCAL-00006" summary="small change -Kasim">
+      <created>1715201281312</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1715201281312</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -160,7 +186,9 @@
     <MESSAGE value="change colors" />
     <MESSAGE value="add message show time taken for sorting" />
     <MESSAGE value="added plotting the algorithm growth rate -Kasim" />
-    <option name="LAST_COMMIT_MESSAGE" value="added plotting the algorithm growth rate -Kasim" />
+    <MESSAGE value="enhanced the sample sizes and the plot shapes and consistencies -Kasim" />
+    <MESSAGE value="small change -Kasim" />
+    <option name="LAST_COMMIT_MESSAGE" value="small change -Kasim" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

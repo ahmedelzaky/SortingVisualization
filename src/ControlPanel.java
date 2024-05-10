@@ -15,11 +15,13 @@ public class ControlPanel extends JPanel {
 
 
     public ControlPanel() {
+        
+
         setLayout(new BorderLayout(10, 10));
-        setBackground(Color.BLACK);
+        setBackground(SortingVisualization.THEME_COLOR);
 
         JPanel sortingButtons = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        sortingButtons.setBackground(Color.BLACK);
+        sortingButtons.setBackground(SortingVisualization.THEME_COLOR);
         String[] sortingAlgorithms = {"Bubble Sort", "Selection Sort", "Insertion Sort",
                 "Merge Sort", "Quick Sort"};
         for (String algorithm : sortingAlgorithms) {
@@ -28,21 +30,20 @@ public class ControlPanel extends JPanel {
         }
 
         JPanel searchingButtons = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        searchingButtons.setBackground(Color.BLACK);
+        searchingButtons.setBackground(SortingVisualization.THEME_COLOR);
         String[] searchAlgorithms = {"Linear Search", "Binary Search"};
         for (String algorithm : searchAlgorithms) {
             JButton button = createButton(algorithm);
             searchingButtons.add(button);
         }
 
-        // Adding a TEST button to initiate iterations of sorting.
-        JPanel testButton = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        testButton.setBackground(Color.BLACK);
+        JPanel plotGrowthRate = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        plotGrowthRate.setBackground(SortingVisualization.THEME_COLOR);
         JButton test = createButton(growthRateButtonText);
         searchingButtons.add(test);
 
         JPanel sliderPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        sliderPanel.setBackground(Color.BLACK);
+        sliderPanel.setBackground(SortingVisualization.THEME_COLOR);
         delaySlider = createDelaySlider();
         sliderPanel.add(new JLabel("Delay:"));
         sliderPanel.add(delaySlider);
@@ -138,8 +139,8 @@ public class ControlPanel extends JPanel {
         slider.setPreferredSize(new Dimension(200, 50));
         slider.setMajorTickSpacing(10);
         slider.setPaintTicks(true);
-        slider.setBackground(Color.BLACK);
-        slider.setForeground(Color.WHITE);
+        slider.setBackground(SortingVisualization.THEME_COLOR);
+        slider.setForeground(SortingVisualization.THEME_COLOR);
         slider.addChangeListener(e -> {
             int delay = slider.getValue();
             Main.sortingVisualization.setDelay(delay);

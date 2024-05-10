@@ -31,6 +31,7 @@ public class SortingVisualization extends JPanel {
 
     private static final Color DEFUALT_COLOR = new Color(95, 137, 217);
     private static final Color SELECTED_COLOR = new Color(255, 0, 0);
+    public static final Color THEME_COLOR = Color.WHITE;
     private static Thread sortingThread, plottingThread;
     private int[] sampleSizes = generateSeries(10, true, 2, 15);
 
@@ -44,7 +45,7 @@ public class SortingVisualization extends JPanel {
 
     public SortingVisualization() {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        setBackground(Color.BLACK);
+        setBackground(THEME_COLOR);
         prepareArray(INIT_ARRAY_SIZE);
 
     }
@@ -147,7 +148,6 @@ public class SortingVisualization extends JPanel {
         fineTuneDelay(algorithm, isPlottingGrowthRate);
         fineTuneSampleSize(algorithm, isPlottingGrowthRate);
         if (isPlottingGrowthRate) {
-            prepareArray(sampleSizes[0]);
             runFor(runTestFor(), algorithm);
         } else {
             runFor(1, algorithm);
@@ -197,6 +197,8 @@ public class SortingVisualization extends JPanel {
                     throw new IllegalArgumentException("Invalid sorting algorithm");
             }
             prepareArray(sampleSizes[0]);
+        }else {
+            prepareArray(INIT_ARRAY_SIZE);
         }
     }
 
@@ -262,7 +264,8 @@ public class SortingVisualization extends JPanel {
                         e.fillInStackTrace();
                     }
 
-                    rectWidth = rectWidth == 1 ? rectWidth : rectWidth / 2;
+                    //rectWidth = rectWidth == 1 ? rectWidth : rectWidth / 2;
+                    setOptimalRectWidth();
                     if (Thread.currentThread().getId() != plottingThread.getId()) {
                         return;
                     }
